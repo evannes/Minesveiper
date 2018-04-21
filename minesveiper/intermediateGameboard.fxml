@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="gridPane" alignment="center" hgap="10" onKeyPressed="#keyPressed" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="minesveiper.Controller">
+   <children>
+      <BorderPane maxWidth="360.0" minWidth="360.0" prefHeight="390.0" prefWidth="360.0" style="-fx-background-color: #66777D;">
+         <top>
+            <HBox maxWidth="360.0" minWidth="360.0" prefHeight="50.0" prefWidth="360.0" spacing="107.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="howManyBombs" style="-fx-background-color: black;" text="000" textFill="#e10000">
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="AR DARLING" size="21.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="imageView" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#newGame" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/smileyButton.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="secondsElapsed" style="-fx-background-color: black;" text="000" textFill="#e10000">
+                     <font>
+                        <Font name="AR DARLING" size="21.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <StackPane maxHeight="330.0" prefHeight="330.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Canvas fx:id="canvas" height="320.0" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" width="320.0">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Canvas>
+                  <VBox fx:id="vbox" maxHeight="200.0" maxWidth="130.0" prefHeight="200.0" prefWidth="130.0" style="-fx-background-color: #772244; -fx-opacity: 0.5;" visible="false" />
+                  <Button fx:id="beginner" mnemonicParsing="false" onAction="#startBeginnerGame" prefWidth="110.0" style="-fx-background-color: #BF175A;" text="Beginner" visible="false">
+                     <StackPane.margin>
+                        <Insets bottom="105.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button fx:id="intermediate" layoutX="270.0" layoutY="117.0" mnemonicParsing="false" onAction="#startIntermediateGame" prefWidth="110.0" style="-fx-background-color: #BF175A;" text="Intermediate" visible="false">
+                     <StackPane.margin>
+                        <Insets bottom="20.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Button fx:id="expert" layoutX="270.0" layoutY="172.0" mnemonicParsing="false" onAction="#startExpertGame" prefWidth="110.0" style="-fx-background-color: #BF175A;" text="Expert" visible="false">
+                     <StackPane.margin>
+                        <Insets top="65.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
