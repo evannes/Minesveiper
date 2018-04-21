@@ -55,7 +55,15 @@ public class Game implements Serializable {
             if (board[x][y].isBomb()) {
                 if(!hasStarted){
                     moveBomb(x,y);
+                    resetNeighbors();
+                    countNeighbors();
                     hasStarted = true;
+                    //
+                    if(board[x][y].getNeighbors() == 0) {
+                        borderBoard = new int[board.length][board[0].length];
+                        removeEmptyNeighbors(x, y);
+                        showBorder();
+                    }
                 } else {
                     died = true;
                 }
@@ -65,6 +73,7 @@ public class Game implements Serializable {
                 showBorder();
             }
         }
+        if(!hasStarted) hasStarted = true;
     }
 
     void mouseRightClicked(MouseEvent e){
@@ -117,6 +126,7 @@ public class Game implements Serializable {
                 hasBeenPlaced = true;
             }
         }
+        System.out.println("removed bomb");
     }
 
     void newGame(){
@@ -152,11 +162,24 @@ public class Game implements Serializable {
             if(!board[x][y].isBomb()) board[x][y].setBomb(true);
             else i--;
         }
+        countNeighbors();
+    }
+
+    private void countNeighbors(){
         // count neighbors
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
                 Brick brick = board[i][j];
                 countNeighbors(i,j, brick);
+            }
+        }
+    }
+
+    private void resetNeighbors(){
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < columns; j++){
+                Brick brick = board[i][j];
+                brick.setNeighbors(0);
             }
         }
     }
