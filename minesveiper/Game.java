@@ -47,6 +47,12 @@ public class Game implements Serializable {
         initBoard();
     }
 
+    /**
+     * When a mouseclick is registered on the canvas, this method occurs.
+     * It will remove the brick from the board, and check if it contained
+     * a bomb or not. If a bomb is present, the game is over.
+     * @param e mouseclick-event on the canvas
+     */
     void mousePressed(MouseEvent e){
         int x = (int)e.getY()/blockSize;
         int y = (int)e.getX()/blockSize;
@@ -76,6 +82,11 @@ public class Game implements Serializable {
         if(!hasStarted) hasStarted = true;
     }
 
+    /**
+     * Marks a brick with a flag, or removes the flag if present.
+     * Also counts how many bombs have been flagged, and updates the view.
+     * @param e mouseclick-event on the canvas
+     */
     void mouseRightClicked(MouseEvent e){
         int x = (int)e.getY()/blockSize;
         int y = (int)e.getX()/blockSize;
@@ -90,6 +101,14 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * A recursive method that removes neighboring bricks of the
+     * input brick that have no neighboring bombs.
+     * @param x x-coordinate of the original brick
+     * @param y y-coordinate of the original brick
+     * @param i will add to the x-coordinate of the neighbor
+     * @param j will add to the y-coordinate of the neighbor
+     */
     private void removeOne(int x, int y, int i, int j){
         if(board[x+i][y+j].isAlive()){
             if(!board[x+i][y+j].isFlagMarked()) {
@@ -99,6 +118,12 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Removes the neighbors that have no neighboring bombs
+     * after one brick has been removed.
+     * @param x x-coordinate of the original brick
+     * @param y y-coordinate of the original brick
+     */
     private void removeEmptyNeighbors(int x, int y){
         borderBoard[x][y] = 2;
         for(int i = -1; i < 2; i++) {
@@ -114,6 +139,13 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * If the first brick that gets clicked contains a bomb,
+     * the bomb will be moved somewhere else so that the game
+     * can continue.
+     * @param i the x coordinate of the original bomb
+     * @param j the y coordinate of the original bomb
+     */
     private void moveBomb(int i, int j){
         board[i][j].setBomb(false);
         boolean hasBeenPlaced = false;
@@ -126,9 +158,11 @@ public class Game implements Serializable {
                 hasBeenPlaced = true;
             }
         }
-        System.out.println("removed bomb");
     }
 
+    /**
+     * Initiates a new game.
+     */
     void newGame(){
         initBoard();
         died = false;
@@ -136,6 +170,11 @@ public class Game implements Serializable {
         howManyBombs.setText(String.valueOf(bombs));
     }
 
+    /**
+     * Initiates the game board. Decides number of bombs, and size of array
+     * depending on the size of the canvas.
+     * Bombs are placed, and the neighboring bombs are counted.
+     */
     private void initBoard(){
         if(gc.getCanvas().getHeight() < 170){
             bombs = 10;
@@ -165,6 +204,9 @@ public class Game implements Serializable {
         countNeighbors();
     }
 
+    /**
+     * Calls method to count neighboring bombs for each brick.
+     */
     private void countNeighbors(){
         // count neighbors
         for(int i = 0; i < rows; i++){
@@ -175,6 +217,9 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Resets the count of neighbors to 0.
+     */
     private void resetNeighbors(){
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < columns; j++){
@@ -184,6 +229,12 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Counts the neighboring boms for a brick.
+     * @param x x-coordinate of the brick
+     * @param y y-coordinate of the brick
+     * @param brick the Brick object
+     */
     private void countNeighbors(int x, int y, Brick brick){
         for(int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
@@ -196,11 +247,21 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Checks if the x and y coordinates are within bounds of an array.
+     * @param x x-coordinate in array
+     * @param y y-coordinate in array
+     * @return true if it is in bounds
+     */
     private boolean isInBounds(int x, int y){
         if(x < 0 || x > rows-1 || y < 0 || y > columns-1) return false;
         return true;
     }
 
+    /**
+     * After a field of bricks with no neighboring bombs have been shown,
+     * the nearest bricks that have neighboring bombs will be revealed.
+     */
     private void showBorder(){
         for(int i = 0; i < borderBoard.length; i++){
             for(int j = 0; j < borderBoard[0].length; j++){
@@ -231,7 +292,11 @@ public class Game implements Serializable {
         }
     }
 
-    public boolean isGameWon(){
+    /**
+     * Checks to see if the game has been won.
+     * @return true if the game is won
+     */
+    boolean isGameWon(){
         for(int i = 0; i < board.length; i++){
             for(int j = 0; j < board[0].length; j++){
                 if(board[i][j].isAlive() && !board[i][j].isBomb()){

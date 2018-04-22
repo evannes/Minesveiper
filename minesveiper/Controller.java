@@ -58,7 +58,11 @@ public class Controller implements Initializable{
     private Game game;
     private AnimationTimer at;
     private int seconds;
+    private boolean gamePaused = false;
 
+    /**
+     * Draws the game on the canvas.
+     */
     private void drawGame(){
         int x = 0;
         int y = 0;
@@ -93,8 +97,12 @@ public class Controller implements Initializable{
         }
     }
 
+    /**
+     * Takes in a mouse event when a mouse has clicked on the canvas.
+     * @param e mouseclick-event
+     */
     public void mousePressed(MouseEvent e){
-        if(!game.died() && !game.isWon()) {
+        if(!game.died() && !game.isWon() && !gamePaused) {
             if (e.isSecondaryButtonDown()) {
                 game.mouseRightClicked(e);
             } else {
@@ -130,32 +138,49 @@ public class Controller implements Initializable{
         }
     }
 
+    /**
+     * Detecs when a mouseclick has been released, and changes the smileyface.
+     */
     public void mouseReleased(){
-        if(!game.died())imageView.setImage(game.getSmiley());
+        if(!game.died() && !game.isWon() && !gamePaused)imageView.setImage(game.getSmiley());
     }
 
+    /**
+     * Takes in a keyevent, and pauses the game if the appropriate key was pressed.
+     * @param e keyevent
+     */
     public void keyPressed(KeyEvent e){
-        game.setPaused(!game.isPaused());
-        boolean isPaused = game.isPaused();
 
         if(e.getCode() == KeyCode.ESCAPE){
-            vbox.setVisible(isPaused);
-            beginner.setVisible(isPaused);
-            intermediate.setVisible(isPaused);
-            expert.setVisible(isPaused);
+            gamePaused = !gamePaused;
+            if(!gamePaused) at.start();
+            else at.stop();
+
+            vbox.setVisible(gamePaused);
+            beginner.setVisible(gamePaused);
+            intermediate.setVisible(gamePaused);
+            expert.setVisible(gamePaused);
         }
     }
 
+    /**
+     * Calls on actions to start a new game.
+     */
     public void newGame(){
-        game.newGame();
-        drawGame();
-        imageView.setImage(game.getSmiley());
-        at.stop();
-        seconds = 0;
-        game.setGameWon(false);
-        tickingClock();
+        if(!gamePaused) {
+            game.newGame();
+            drawGame();
+            imageView.setImage(game.getSmiley());
+            at.stop();
+            seconds = 0;
+            game.setGameWon(false);
+            tickingClock();
+        }
     }
 
+    /**
+     * Ticking clock that counts the seconds a game has been playing.
+     */
     private void tickingClock(){
 
         secondsElapsed.setText(Integer.toString(0));
@@ -180,6 +205,10 @@ public class Controller implements Initializable{
         at.start();
     }
 
+    /**
+     * Starts a beginner game.
+     * @throws IOException if fxml-file is not found
+     */
     public void startBeginnerGame() throws IOException{
         Stage stage;
         Parent root;
@@ -192,6 +221,10 @@ public class Controller implements Initializable{
         root.requestFocus();
     }
 
+    /**
+     * Starts an intermediate game.
+     * @throws IOException if fxml-file is not found
+     */
     public void startIntermediateGame() throws IOException{
         Stage stage;
         Parent root;
@@ -204,6 +237,10 @@ public class Controller implements Initializable{
         root.requestFocus();
     }
 
+    /**
+     * Starts an expert game.
+     * @throws IOException if fxml-file is not found
+     */
     public void startExpertGame() throws IOException{
         Stage stage;
         Parent root;
