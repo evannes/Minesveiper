@@ -14,7 +14,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("intermediateGameboard.fxml"));
         primaryStage.setTitle("Minesveiper");
-        primaryStage.getIcons().add(new Image("/minesveiper/img/bombIcon.ico"));
+        primaryStage.getIcons().add(new Image("minesveiper/img/bomb2.png"));
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
